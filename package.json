@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npm run serve:prod",
+    "start": "npm run serve",
     "test": "eslint src/*.ts",
     "build:pord": "webpack --mode=production",
     "build": "webpack --mode=development",
