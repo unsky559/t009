@@ -1,18 +1,27 @@
 import {
-  AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography,
+  AppBar, Box, Button, Container, Toolbar, Typography,
 } from '@mui/material';
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux';
 
-const pages = [
-  ['Sing in', '/signin'],
-  ['Login', '/login'],
-  ['Films', '/films'],
-  ['Add film', '/add'],
-];
+let pages = [];
 
 const Header = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { isAuth } = useAppSelector((state) => state.authReducer.auth);
+
+  if (isAuth) {
+    pages = [
+      ['Films', '/films'],
+      ['Add film', '/add'],
+    ];
+  } else {
+    pages = [
+      ['Sing in', '/signin'],
+      ['Login', '/login'],
+    ];
+  }
 
   return (
         <AppBar position="static">
@@ -29,7 +38,7 @@ const Header = () => {
                           fontWeight: 700,
                           letterSpacing: '.3rem',
                           color: 'inherit',
-                          textDecoration: 'none'
+                          textDecoration: 'none',
                         }}
                     >
                         t009
@@ -40,7 +49,7 @@ const Header = () => {
                                 key={page[0]}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                                 onClick={() => {
-                                    navigate(page[1]);
+                                  navigate(page[1]);
                                 }}
                             >
                                 {page[0]}

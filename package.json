@@ -6,16 +6,19 @@
     "test": "eslint src/*.ts",
     "build:pord": "webpack --mode=production",
     "build": "webpack --mode=development",
-    "serve": "webpack serve --mode=development"
+    "serve": "webpack serve --mode=development",
+    "serve:prod": "webpack serve --mode=production"
   },
   "author": "unsky559",
   "license": "ISC",
   "devDependencies": {
     "@babel/register": "^7.18.9",
     "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.24",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "css-loader": "^6.7.1",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -39,8 +42,10 @@
     "@emotion/styled": "^11.10.4",
     "@mui/material": "^5.10.5",
     "@reduxjs/toolkit": "^1.8.5",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
     "react-router-dom": "^6.4.0"
   }
 }

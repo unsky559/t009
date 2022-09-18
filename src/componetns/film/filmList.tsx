@@ -1,15 +1,15 @@
 import React from 'react';
-import film from '../../types/filmType';
 import FilmCard from './filmCard';
+import IFilm from '../../types/IFilm';
 
 type propType = {
-    films: film[]
+    films: IFilm[]
 }
 
 const FilmList = (props: propType) => (<>
-    {
-        props.films.map((currentFilm) => <FilmCard film={currentFilm}/>)
-    }
+        {
+            props.films?.map((currentFilm) => <FilmCard key={currentFilm.id} film={currentFilm}/>)
+        }
     </>);
 
 export default FilmList;

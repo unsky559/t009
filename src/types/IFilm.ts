@@ -1,6 +1,6 @@
-import actor from './actorType';
+import actor from './IActor';
 
-type film = {
+interface IFilm {
     id: number,
     title: string,
     year: number,
@@ -8,4 +8,4 @@ type film = {
     actors?: actor[]
 }
 
-export default film;
+export default IFilm;

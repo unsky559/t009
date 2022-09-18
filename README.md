@@ -1,16 +1,18 @@
-# Webpack React Typescript starter
+# t009
 
 ## What`s inside?
 
 - **react**
+  - materialUI
+  - react-router-dom
+- **redux**
+  - redux-toolkit
 - **typescript**
 - **sass**
   - sass-loader
 - style-loader
 - eslint (airbnb)
 - **webpack**
-  - html-webpack-plugin
-  - copy-webpack-plugin
 
 ## Develop
 
