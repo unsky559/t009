@@ -12,10 +12,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import FilmService from '../services/FilmService';
 
 const ImportFilmsPage = () => {
+  const navigate = useNavigate();
   const [formData, updateFormData] = useState<FormData>();
   const rq = useFetch(FilmService.import({ formData }));
 
@@ -33,7 +35,7 @@ const ImportFilmsPage = () => {
   const [openDialog, changeDialogState] = useState(false);
 
   const handleClose = () => {
-    changeDialogState(false);
+    navigate('/films');
   };
 
   useEffect(() => {
@@ -90,7 +92,7 @@ const ImportFilmsPage = () => {
                   <pre>Stars: Mel Brooks, Clevon Little, Harvey Korman</pre>
               </Typography>
               <Stack>
-                  <input type="file" onChange={handleChange}/>
+                  <input style={{ margin: 20 }} type="file" onChange={handleChange}/>
                   <Button onClick={handleSubmit} variant="contained" disabled={!formData}>Upload</Button>
               </Stack>
 
