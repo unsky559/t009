@@ -84,18 +84,22 @@ const FilmCard = (props: propType) => {
           <Card sx={{ minWidth: 275, margin: 2 }}>
               <CardContent>
                   <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                      {props.film.year} - {props.film.format}
+                      Film id: {props.film.id} | {props.film.year} - {props.film.format}
                   </Typography>
                   <Typography variant="h5" component="div">
                       {props.film.title}
                   </Typography>
                   {props.film.actors?.map((actor) => <Chip key={actor.id} label={actor.name} variant="outlined"/>)}
                   <CardActions>
-                      <Button onClick={infoClick} disabled={rq.isLoading || rqInfo.isLoading}>About film</Button>
+                      <Button
+                          onClick={infoClick}
+                          disabled={rq.isLoading || rqInfo.isLoading}>
+                          About film
+                      </Button>
                       <Button
                           disabled={rq.isLoading || rqInfo.isLoading}
                           onClick={deleteClick}>
-                          Delete id: {props.film.id}
+                          Delete
                       </Button>
                   </CardActions>
               </CardContent>
