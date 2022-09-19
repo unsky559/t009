@@ -12,6 +12,10 @@ import {
   DialogTitle,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
@@ -120,10 +124,20 @@ const AddFilmPage = () => {
                       error={!year.isValid}
                       helperText={year.helperText}
                       onChange={(e) => { year.updateValue(e.target.value); }} fullWidth margin="normal" label="Year" type="number" variant="outlined"/>
-                  <TextField
-                      error={!format.isValid}
-                      helperText={format.helperText}
-                      onChange={(e) => { format.updateValue(e.target.value); }} fullWidth margin="normal" label="Format" variant="outlined"/>
+                  <FormControl fullWidth>
+                      <InputLabel id="select-label">Format</InputLabel>
+                      <Select
+                          labelId="select-label"
+                          label="Format"
+                          error={!format.isValid}
+                          value={format.value}
+                          onChange={(e) => { format.updateValue(e.target.value); }} fullWidth
+                      >
+                          <MenuItem value="VHS">VHS</MenuItem>
+                          <MenuItem value="DVD">DVD</MenuItem>
+                          <MenuItem value="Blu-Ray">Blu-Ray</MenuItem>
+                      </Select>
+                  </FormControl>
                   <Autocomplete
                       multiple
                       id="tags-filled"
