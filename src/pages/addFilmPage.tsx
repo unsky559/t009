@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, { useEffect, useState } from 'react';
 import {
   Autocomplete, Backdrop,
@@ -16,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import useFetch from '../hooks/useFetch';
 import FilmService from '../services/FilmService';
+import { errorConvert } from '../tools/errorConvert';
 
 const AddFilmPage = () => {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const AddFilmPage = () => {
   const format = useInput();
   const [actors, updateActors] = useState<string[]>([]);
   const [actorsValid, updateActorsValid] = useState(true);
+  const [actorsHelper, updateActorsHelper] = useState('');
 
   const [dialogOpen, openDialog] = useState(false);
 
@@ -54,15 +57,19 @@ const AddFilmPage = () => {
       if (rq.error.error?.fields) {
         if ('title' in rq.error.error.fields) {
           title.updateValid(false);
+          title.updateHelperText(errorConvert(rq.error.error.fields['title']));
         }
         if ('year' in rq.error.error.fields) {
           year.updateValid(false);
+          year.updateHelperText(errorConvert(rq.error.error.fields['year']));
         }
         if ('format' in rq.error.error.fields) {
           format.updateValid(false);
+          format.updateHelperText(errorConvert(rq.error.error.fields['format']));
         }
         if ('actors' in rq.error.error.fields) {
           updateActorsValid(false);
+          updateActorsHelper(errorConvert(rq.error.error.fields['actors']));
         }
       }
     }
@@ -105,9 +112,18 @@ const AddFilmPage = () => {
                   noValidate
                   autoComplete="off"
               >
-                  <TextField error={!title.isValid} onChange={(e) => { title.updateValue(e.target.value); }} fullWidth margin="normal" label="Title" variant="outlined"/>
-                  <TextField error={!year.isValid} onChange={(e) => { year.updateValue(e.target.value); }} fullWidth margin="normal" label="Year" type="number" variant="outlined"/>
-                  <TextField error={!format.isValid} onChange={(e) => { format.updateValue(e.target.value); }} fullWidth margin="normal" label="Format" variant="outlined"/>
+                  <TextField
+                      error={!title.isValid}
+                      helperText={title.helperText}
+                      onChange={(e) => { title.updateValue(e.target.value); }} fullWidth margin="normal" label="Title" variant="outlined"/>
+                  <TextField
+                      error={!year.isValid}
+                      helperText={year.helperText}
+                      onChange={(e) => { year.updateValue(e.target.value); }} fullWidth margin="normal" label="Year" type="number" variant="outlined"/>
+                  <TextField
+                      error={!format.isValid}
+                      helperText={format.helperText}
+                      onChange={(e) => { format.updateValue(e.target.value); }} fullWidth margin="normal" label="Format" variant="outlined"/>
                   <Autocomplete
                       multiple
                       id="tags-filled"
@@ -121,6 +137,7 @@ const AddFilmPage = () => {
                       renderInput={(params) => (
                           <TextField
                               error={!actorsValid}
+                              helperText={actorsHelper}
                               {...params}
                               variant="outlined"
                               margin="normal"

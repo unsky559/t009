@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, { useEffect } from 'react';
 import {
   Backdrop,
@@ -9,56 +10,48 @@ import useInput from '../hooks/useInput';
 import { useAppDispatch } from '../hooks/redux';
 import { authSlice } from '../store/reducers/AuthSlice';
 import { IAuth } from '../types/IAuth';
+import { errorConvert } from '../tools/errorConvert';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const { authorise } = authSlice.actions;
 
-  const onNetworkError = useNetworkError();
+  const login = useInput();
+  const password = useInput();
 
-  const {
-    value: login, updateValue: updateLogin, isValid: loginValid, updateValid: setLoginValid,
-  } = useInput();
-  const {
-    value: password,
-    updateValue: updatePassword,
-    isValid: passwordValid,
-    updateValid: setPasswordValid,
-  } = useInput();
-
-  const {
-    fetching: makeReq, isLoading, error, data,
-  } = useFetch<IAuth>(AuthService.login({
-    email: login,
-    password,
+  const rq = useFetch<IAuth>(AuthService.login({
+    email: login.value,
+    password: password.value,
   }));
 
   useEffect(() => {
-    if (error) {
-      if (error.error?.fields) {
-        if ('email' in error.error.fields) {
-          setLoginValid(false);
+    if (rq.error) {
+      if (rq.error.error?.fields) {
+        if ('email' in rq.error.error.fields) {
+          login.updateValid(false);
+          login.updateHelperText(errorConvert(rq.error.error.fields['email']));
         }
-        if ('password' in error.error.fields) {
-          setPasswordValid(false);
+        if ('password' in rq.error.error.fields) {
+          password.updateValid(false);
+          password.updateHelperText(errorConvert(rq.error.error.fields['password']));
         }
       }
     }
-  }, [error]);
+  }, [rq.error]);
 
   useEffect(() => {
-    if (data) {
-      if (data.token) {
-        dispatch(authorise(String(data.token)));
+    if (rq.data) {
+      if (rq.data.token) {
+        dispatch(authorise(String(rq.data.token)));
       }
     }
-  }, [data]);
+  }, [rq.data]);
 
   return (
       <>
           <Backdrop
               sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={isLoading}
+              open={rq.isLoading}
           >
               <CircularProgress color="inherit" />
           </Backdrop>
@@ -74,17 +67,19 @@ const LoginPage = () => {
                       margin="normal"
                       label="Login"
                       variant="outlined"
-                      error={!loginValid}
-                      onChange={(e) => updateLogin(e.target.value)}/>
+                      error={!login.isValid}
+                      helperText={login.helperText}
+                      onChange={(e) => login.updateValue(e.target.value)}/>
                   <TextField
                       fullWidth
                       margin="normal"
                       label="Password"
                       type="password"
                       variant="outlined"
-                      error={!passwordValid}
-                      onChange={(e) => updatePassword(e.target.value)}/>
-                  <Button variant="contained" onClick={makeReq} disabled={isLoading}>Login</Button>
+                      error={!password.isValid}
+                      helperText={password.helperText}
+                      onChange={(e) => password.updateValue(e.target.value)}/>
+                  <Button variant="contained" onClick={rq.fetching} disabled={rq.isLoading}>Login</Button>
               </Box>
           </Container>
       </>

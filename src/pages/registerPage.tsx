@@ -10,7 +10,7 @@ import AuthService from '../services/AuthService';
 import { useAppDispatch } from '../hooks/redux';
 import { authSlice } from '../store/reducers/AuthSlice';
 import { IAuth } from '../types/IAuth';
-import useNetworkError from '../hooks/useNetworkError';
+import { errorConvert } from '../tools/errorConvert';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -36,15 +36,19 @@ const RegisterPage = () => {
       if (error.error?.fields) {
         if ('data/email' in error.error.fields) {
           email.updateValid(false);
+          email.updateHelperText(errorConvert(error.error.fields['data/email']));
         }
         if ('data/name' in error.error.fields) {
           name.updateValid(false);
+          name.updateHelperText(errorConvert(error.error.fields['data/name']));
         }
         if ('data/password' in error.error.fields) {
           password.updateValid(false);
+          password.updateHelperText(errorConvert(error.error.fields['data/password']));
         }
         if ('data/confirmPassword' in error.error.fields) {
           password2.updateValid(false);
+          password2.updateHelperText(errorConvert(error.error.fields['data/confirmPassword']));
         }
       }
     }
@@ -77,6 +81,7 @@ const RegisterPage = () => {
               >
                   <TextField
                       error={!email.isValid}
+                      helperText={email.helperText}
                       onChange={(e) => { email.updateValue(e.target.value); }}
                       fullWidth
                       margin="normal"
@@ -85,6 +90,7 @@ const RegisterPage = () => {
                       variant="outlined"/>
                   <TextField
                       error={!name.isValid}
+                      helperText={name.helperText}
                       onChange={(e) => { name.updateValue(e.target.value); }}
                       fullWidth
                       id="outlined-basic"
@@ -93,6 +99,7 @@ const RegisterPage = () => {
                       variant="outlined"/>
                   <TextField
                       error={!password.isValid}
+                      helperText={password.helperText}
                       onChange={(e) => { password.updateValue(e.target.value); }}
                       fullWidth
                       margin="normal"
@@ -101,6 +108,7 @@ const RegisterPage = () => {
                       variant="outlined"/>
                   <TextField
                       error={!password2.isValid}
+                      helperText={password2.helperText}
                       onChange={(e) => { password2.updateValue(e.target.value); }}
                       fullWidth
                       margin="normal"
