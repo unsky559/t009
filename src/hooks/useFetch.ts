@@ -17,6 +17,9 @@ export default function useFetch<ResponceType>(callback: () => Promise<any>):
 
   const fetching = async () => {
     try {
+      setError(null);
+      setData(null);
+      setNetworkError(null);
       setIsLoading(true);
       const resp = await callback();
       setData(resp);

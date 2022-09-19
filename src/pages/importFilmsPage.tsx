@@ -35,7 +35,12 @@ const ImportFilmsPage = () => {
   const [openDialog, changeDialogState] = useState(false);
 
   const handleClose = () => {
-    navigate('/films');
+    if (rq.data) {
+      navigate('/films');
+    }
+    if (rq.error) {
+      changeDialogState(false);
+    }
   };
 
   useEffect(() => {
@@ -74,9 +79,9 @@ const ImportFilmsPage = () => {
                   </DialogContentText>
               </DialogContent>
               <DialogActions>
-                  <Button onClick={handleClose} autoFocus>
-                      ok
-                  </Button>
+                 <Button onClick={handleClose} autoFocus>
+                     ok
+                 </Button>
               </DialogActions>
           </Dialog>
 
