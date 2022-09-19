@@ -29,7 +29,7 @@ const AddFilmPage = () => {
   const title = useInput();
   const year = useInput();
   const format = useInput();
-  const [actors, updateActors] = useState<string[]>([]);
+  const [actors, updateActors] = useState<string[]>(['']);
   const [actorsValid, updateActorsValid] = useState(true);
   const [actorsHelper, updateActorsHelper] = useState('');
 
@@ -43,10 +43,6 @@ const AddFilmPage = () => {
   }));
 
   useEffect(() => {
-    console.log(actors);
-  }, [actors]);
-
-  useEffect(() => {
     if (rq.data?.status === 1) {
       openDialog(true);
     }
@@ -54,6 +50,10 @@ const AddFilmPage = () => {
 
   const handleClose = () => {
     openDialog(false);
+    title.updateValue('');
+    format.updateValue('');
+    year.updateValue('');
+    updateActors([]);
   };
 
   useEffect(() => {
@@ -101,8 +101,11 @@ const AddFilmPage = () => {
                   </DialogContentText>
               </DialogContent>
               <DialogActions>
+                  <Button onClick={() => navigate('/films')} autoFocus>
+                      films
+                  </Button>
                   <Button onClick={handleClose} autoFocus>
-                      ok
+                      add another one
                   </Button>
               </DialogActions>
           </Dialog>
@@ -117,10 +120,12 @@ const AddFilmPage = () => {
                   autoComplete="off"
               >
                   <TextField
+                      value={title.value}
                       error={!title.isValid}
                       helperText={title.helperText}
                       onChange={(e) => { title.updateValue(e.target.value); }} fullWidth margin="normal" label="Title" variant="outlined"/>
                   <TextField
+                      value={year.value}
                       error={!year.isValid}
                       helperText={year.helperText}
                       onChange={(e) => { year.updateValue(e.target.value); }} fullWidth margin="normal" label="Year" type="number" variant="outlined"/>
