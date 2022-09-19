@@ -51,17 +51,19 @@ const AddFilmPage = () => {
 
   useEffect(() => {
     if (rq.error) {
-      if ('title' in rq.error.error.fields) {
-        title.updateValid(false);
-      }
-      if ('year' in rq.error.error.fields) {
-        year.updateValid(false);
-      }
-      if ('format' in rq.error.error.fields) {
-        format.updateValid(false);
-      }
-      if ('actors' in rq.error.error.fields) {
-        updateActorsValid(false);
+      if (rq.error.error?.fields) {
+        if ('title' in rq.error.error.fields) {
+          title.updateValid(false);
+        }
+        if ('year' in rq.error.error.fields) {
+          year.updateValid(false);
+        }
+        if ('format' in rq.error.error.fields) {
+          format.updateValid(false);
+        }
+        if ('actors' in rq.error.error.fields) {
+          updateActorsValid(false);
+        }
       }
     }
   }, [rq.error]);

@@ -6,11 +6,13 @@ export default function useFetch<ResponceType>(callback: () => Promise<any>):
     {
       fetching: () => Promise<void>,
       isLoading: boolean,
+      networkError: string,
       error: IError | null,
       data: ResponceType
     } {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [networkError, setNetworkError] = useState(null);
   const [data, setData] = useState();
 
   const fetching = async () => {
@@ -20,6 +22,12 @@ export default function useFetch<ResponceType>(callback: () => Promise<any>):
       setData(resp);
     } catch (er) {
       setError(er);
+
+      if (er?.error?.code === 'ERR_NETWORK') {
+        // TODO: remove this from here to some kind of callback param
+        alert('Network connection error. Make sure that backend service is still running');
+        setNetworkError(er.error.code);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -28,6 +36,7 @@ export default function useFetch<ResponceType>(callback: () => Promise<any>):
   return {
     fetching,
     isLoading,
+    networkError,
     error,
     data,
   };

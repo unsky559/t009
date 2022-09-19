@@ -3,7 +3,6 @@ import {
   Backdrop,
   Box, Button, CircularProgress, Container, TextField, Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import AuthService from '../services/AuthService';
 import useInput from '../hooks/useInput';
@@ -14,6 +13,8 @@ import { IAuth } from '../types/IAuth';
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const { authorise } = authSlice.actions;
+
+  const onNetworkError = useNetworkError();
 
   const {
     value: login, updateValue: updateLogin, isValid: loginValid, updateValid: setLoginValid,
@@ -34,11 +35,13 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (error) {
-      if ('email' in error.error.fields) {
-        setLoginValid(false);
-      }
-      if ('password' in error.error.fields) {
-        setPasswordValid(false);
+      if (error.error?.fields) {
+        if ('email' in error.error.fields) {
+          setLoginValid(false);
+        }
+        if ('password' in error.error.fields) {
+          setPasswordValid(false);
+        }
       }
     }
   }, [error]);

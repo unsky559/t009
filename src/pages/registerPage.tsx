@@ -10,6 +10,7 @@ import AuthService from '../services/AuthService';
 import { useAppDispatch } from '../hooks/redux';
 import { authSlice } from '../store/reducers/AuthSlice';
 import { IAuth } from '../types/IAuth';
+import useNetworkError from '../hooks/useNetworkError';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -32,17 +33,19 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (error) {
-      if ('data/email' in error.error.fields) {
-        email.updateValid(false);
-      }
-      if ('data/name' in error.error.fields) {
-        name.updateValid(false);
-      }
-      if ('data/password' in error.error.fields) {
-        password.updateValid(false);
-      }
-      if ('data/confirmPassword' in error.error.fields) {
-        password2.updateValid(false);
+      if (error.error?.fields) {
+        if ('data/email' in error.error.fields) {
+          email.updateValid(false);
+        }
+        if ('data/name' in error.error.fields) {
+          name.updateValid(false);
+        }
+        if ('data/password' in error.error.fields) {
+          password.updateValid(false);
+        }
+        if ('data/confirmPassword' in error.error.fields) {
+          password2.updateValid(false);
+        }
       }
     }
   }, [error]);
