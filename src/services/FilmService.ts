@@ -19,14 +19,14 @@ interface IIdReq {
 }
 
 interface IMoviesReq {
-  search?: string
+  search?: string,
 }
 
 export default class FilmService {
-  static movies(data?: IMoviesReq) {
+  static movies(data?: IMoviesReq, page = 1) {
     return async () => {
       const result = await axios.get(url('movies'), {
-        params: { sort: 'title', order: 'ASC', search: data?.search },
+        params: { sort: 'title', order: 'ASC', limit: 10, offset: (page - 1) * 10, search: data?.search },
       })
         .catch(axiosEr);
 
